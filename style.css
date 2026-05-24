@@ -1,0 +1,137 @@
+:root {
+    --bg-color: #0f1115;
+    --card-bg: #1a1d24;
+    --primary-gold: #FFD700;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background-color: var(--card-bg);
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--primary-gold);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-gold);
+    margin-bottom: 20px;
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+select, input, textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+select:focus, input:focus, textarea:focus {
+    border-color: var(--primary-gold);
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.btn-generate {
+    background-color: var(--primary-gold);
+    color: #000;
+}
+
+.btn-copy {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.result-box {
+    margin-top: 20px;
+}
+
+textarea {
+    height: 250px;
+    resize: vertical;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Toast Notification - High Z-Index to prevent overlap */
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: var(--primary-gold);
+    color: #000;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 9999;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s, bottom 0.3s;
+}
+
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+}

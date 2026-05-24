@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILIOLAB TEMPLATE SHARE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>💎 MILIOLAB TEMPLATE SHARE</h2>
+
+        <div class="form-group">
+            <label for="paket">Pilih Paket:</label>
+            <select id="paket" onchange="toggleFields()">
+                <option value="seedance">SEEDANCE PRIVATE</option>
+                <option value="veo_basic">FLOW VEO 3.1 BASIC LITE</option>
+                <option value="veo_pro">FLOW VEO 3.1 PRO FAST</option>
+                <option value="veo_ultimate">FLOW VEO 3.1 ULTIMATE FAST</option>
+                <option value="grok_basic">SUPER GROK BASIC</option>
+                <option value="grok_ultimate">SUPER GROK ULTIMATE</option>
+                <option value="happy_horse">HAPPY HORSE ULTIMATE</option>
+                <option value="suno">SUNO ULTIMATE UNLIMITED</option>
+                <option value="gpt">CHAT GPT PLUS PRIVATE</option>
+                <option value="capcut">CAPCUT PRO PRIVATE</option>
+                <option value="ext_basic">FLOW ULTRA VIP BASIC (EXTENSION)</option>
+                <option value="ext_pro">FLOW ULTRA VIP PRO (EXTENSION)</option>
+                <option value="ext_ultimate">FLOW ULTRA VIP ULTIMATE (EXTENSION)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tanggal">Tanggal Aktif:</label>
+            <input type="text" id="tanggal" placeholder="Contoh: 25 Mei 2026">
+        </div>
+
+        <div id="private-fields">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" id="email" placeholder="email@gmail.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="text" id="password" placeholder="password123">
+            </div>
+            <div class="form-group" id="field-link-akses">
+                <label for="link-akses">Link Akses:</label>
+                <input type="text" id="link-akses" placeholder="https://link-akses.com">
+            </div>
+        </div>
+
+        <div id="extension-fields" class="hidden">
+            <div class="form-group">
+                <label for="link-ext">Link Extension:</label>
+                <input type="text" id="link-ext" placeholder="Link Extension" value="https://bit.ly/ext-miliolab">
+            </div>
+            <div class="form-group">
+                <label for="link-apk">Link APK Android:</label>
+                <input type="text" id="link-apk" placeholder="Link APK" value="https://bit.ly/apk-miliolab">
+            </div>
+            <div class="form-group">
+                <label for="link-kiwi">Link Kiwi Browser:</label>
+                <input type="text" id="link-kiwi" placeholder="Link Kiwi" value="https://bit.ly/kiwi-miliolab">
+            </div>
+            <div class="form-group">
+                <label for="kode-akses">Kode Akses:</label>
+                <input type="text" id="kode-akses" placeholder="MILIO-XXXX-XXXX">
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-generate" onclick="generateTemplate()">⚙️ Generate Text</button>
+            <button class="btn-copy" onclick="copyToClipboard()">📋 Copy</button>
+        </div>
+
+        <div class="result-box">
+            <textarea id="result" readonly placeholder="Hasil template akan muncul di sini..."></textarea>
+        </div>
+    </div>
+
+    <div id="toast">Berhasil di-copy ke Clipboard! ✅</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
