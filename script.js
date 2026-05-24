@@ -191,7 +191,7 @@ function generateTemplate() {
     document.getElementById('result').value = result;
 }
 
-// Fitur Copy Universal (Bisa buat ID mana aja)
+// Fitur Copy Universal
 function copyToClipboard(elementId) {
     const el = document.getElementById(elementId);
     if(el.value.trim() === "") return;
@@ -199,15 +199,6 @@ function copyToClipboard(elementId) {
     el.select();
     document.execCommand('copy');
     showToast("Disalin ke Clipboard! ✅");
-}
-
-// Tarik teks ke form WA
-function pullToWa() {
-    const res = document.getElementById('result').value;
-    if(res) {
-        document.getElementById('wa-pesan').value = res;
-        showToast("Teks dimasukkan ke form WA! 📲");
-    }
 }
 
 // Generate Link WA
@@ -230,6 +221,33 @@ function generateWaLink() {
     let url = `https://wa.me/${code}${phone}?text=${encodeURIComponent(text)}`;
     document.getElementById('wa-result').value = url;
     showToast("Link WA Berhasil Dibuat! 🔗");
+}
+
+// Fitur BARU: Memasukkan link WA ke dalam Template
+function insertLinkToTemplate() {
+    const generatedLink = document.getElementById('wa-result').value;
+    let templateText = document.getElementById('result').value;
+
+    if (!generatedLink) {
+        showToast("Generate link WA terlebih dahulu! ⚠️");
+        return;
+    }
+    if (!templateText) {
+        showToast("Generate teks template terlebih dahulu! ⚠️");
+        return;
+    }
+
+    // Regex untuk mendeteksi link wa.link atau wa.me yang lama di dalam template
+    const waLinkRegex = /https:\/\/(wa\.link\/\w+|wa\.me\/\S+)/g;
+    
+    if (waLinkRegex.test(templateText)) {
+        // Mengganti link lama dengan link yang baru digenerate
+        templateText = templateText.replace(waLinkRegex, generatedLink);
+        document.getElementById('result').value = templateText;
+        showToast("Link WA berhasil disematkan ke template! ✅");
+    } else {
+        showToast("Gagal: Link WA di template tidak ditemukan.");
+    }
 }
 
 function showToast(msg) {
