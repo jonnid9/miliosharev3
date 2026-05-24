@@ -52,16 +52,18 @@ Ini adalah PAKET SHARING (AKUN BERBAGI), bukan akun private.
 ❗ Karena ini paket sharing, pelanggaran device berisiko banned sistem tanpa garansi
 ━━━━━━━━━━━━━━━━━━━━━━
 📦 DETAIL AKUN & AKSES
-📱 IOS MOBILE → Browser ORION
-📱 ANDROID → APK Terlampir
-🔗 LINK EXTENSION
+🔗 Link Extension UNTUK PENGGUNA LAPTOP/PC/IOS ORION BROWSER (Sekali Klik Langsung Ter-Download):
 {LINK_EXT}
-🔗 LINK APK ANDROID
+
+🔗 Link APK ANDROID UNTUK PENGGUNA ANDROID (Sekali Klik Langsung Ter-Download, cari filenya dan instal):
 {LINK_APK}
-🔗 LINK KIWI BROWSER
+
+🔗 Link KIWI BROWSER (Alternatif untuk Device Android):
 {LINK_KIWI}
+
 🎟 Kode Akses:
 {KODE_AKSES}
+
 📦 Paket:
 {PAKET_NAME}
 📅 Tanggal Aktif:
@@ -114,6 +116,14 @@ const packageData = {
     "ext_ultimate": { type: "extension", title: "GOOGLE FLOW ULTRA VIP ULTIMATE (EXTENSION)", name: "FLOW ULTRA VIP ULTIMATE (EXTENSION)", serverInfo: "Server 1–7", serverCount: "7" }
 };
 
+// Fungsi Format Tanggal ke Bahasa Indonesia
+function getFormattedDate(dateString) {
+    if (!dateString) return "[TANGGAL_AKTIF]";
+    const d = new Date(dateString);
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
 function toggleFields() {
     const val = document.getElementById('paket').value;
     const data = packageData[val];
@@ -136,7 +146,8 @@ function toggleFields() {
 function generateTemplate() {
     const val = document.getElementById('paket').value;
     const data = packageData[val];
-    const tanggal = document.getElementById('tanggal').value || "[TANGGAL_AKTIF]";
+    const rawTanggal = document.getElementById('tanggal').value;
+    const tanggal = getFormattedDate(rawTanggal);
     
     let result = "";
 
@@ -146,7 +157,7 @@ function generateTemplate() {
         
         let linkAksesStr = "";
         if(!data.noLink) {
-            const linkAkses = document.getElementById('link-akses').value || "[LINK_AKSES]";
+            const linkAkses = document.getElementById('link-akses').value;
             linkAksesStr = `\n🔗 Link Akses :\n${linkAkses}`;
         }
 
@@ -160,9 +171,9 @@ function generateTemplate() {
             .replace("{BODY}", data.body);
 
     } else {
-        const linkExt = document.getElementById('link-ext').value || "[LINK_EXT]";
-        const linkApk = document.getElementById('link-apk').value || "[LINK_APK]";
-        const linkKiwi = document.getElementById('link-kiwi').value || "[LINK_KIWI]";
+        const linkExt = document.getElementById('link-ext').value;
+        const linkApk = document.getElementById('link-apk').value;
+        const linkKiwi = document.getElementById('link-kiwi').value;
         const kodeAkses = document.getElementById('kode-akses').value || "[KODE_AKSES]";
 
         result = templates.extension
@@ -180,19 +191,62 @@ function generateTemplate() {
     document.getElementById('result').value = result;
 }
 
-function copyToClipboard() {
-    const textArea = document.getElementById('result');
-    if(textArea.value.trim() === "") return;
+// Fitur Copy Universal (Bisa buat ID mana aja)
+function copyToClipboard(elementId) {
+    const el = document.getElementById(elementId);
+    if(el.value.trim() === "") return;
     
-    textArea.select();
+    el.select();
     document.execCommand('copy');
+    showToast("Disalin ke Clipboard! ✅");
+}
+
+// Tarik teks ke form WA
+function pullToWa() {
+    const res = document.getElementById('result').value;
+    if(res) {
+        document.getElementById('wa-pesan').value = res;
+        showToast("Teks dimasukkan ke form WA! 📲");
+    }
+}
+
+// Generate Link WA
+function generateWaLink() {
+    let code = document.getElementById('wa-code').value;
+    let phone = document.getElementById('wa-phone').value.trim();
+    let text = document.getElementById('wa-pesan').value;
     
+    if(!phone) {
+        showToast("Masukkan nomor HP dulu!");
+        return;
+    }
+
+    // Hapus angka 0 di depan jika ada
+    if(phone.startsWith('0')) {
+        phone = phone.substring(1);
+    }
+    
+    // Encode teks agar aman masuk URL
+    let url = `https://wa.me/${code}${phone}?text=${encodeURIComponent(text)}`;
+    document.getElementById('wa-result').value = url;
+    showToast("Link WA Berhasil Dibuat! 🔗");
+}
+
+function showToast(msg) {
     const toast = document.getElementById("toast");
+    toast.innerText = msg;
     toast.className = "show";
     setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
 }
 
-// Inisialisasi layout saat pertama kali dimuat
+// Inisialisasi awal saat web dibuka
 window.onload = function() {
     toggleFields();
+    
+    // Set Default Tanggal Hari Ini
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('tanggal').value = `${yyyy}-${mm}-${dd}`;
 };
