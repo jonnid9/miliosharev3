@@ -70,23 +70,23 @@ Ini adalah PAKET SHARING (AKUN BERBAGI), bukan akun private.
 {TANGGAL}
 🛡 Masa Aktif:
 30 Hari
-━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━
 ⚙️ FITUR UTAMA
 ✅ {SERVER_COUNT} Server Google Flow
 ✅ Bonus Server Super Grok
 ✅ Bonus Chat GPT PLUS 1 Bulan
 ✅ Bebas pindah server sesuai kondisi
 ✅ Multi Jalur Generate
-━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━
 ⚠️ KEBIJAKAN PEMBELIAN
 • Tidak dapat refund setelah pembelian
 • Paket sharing performa bisa fluktuatif
 • Jika ada kendala mohon bersabar
 • Tim akan berusaha maksimal memperbaiki secepat mungkin
-━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━
 🎥 PENTING
 Pastikan menonton tutorial sampai selesai agar tidak terjadi kesalahan penggunaan.
-━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━
 🛠 SUPPORT & GARANSI
 ✅ Full Service
 ✅ Full Garansi
@@ -95,7 +95,7 @@ Pastikan menonton tutorial sampai selesai agar tidak terjadi kesalahan penggunaa
 📲 OM MILIO
 CHAT ADMIN DISINI:
 https://wa.link/d3t9ge
-━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━
 💎 MILIOLAB.AI
 Artificial Intelligence for Real Business Growth 🚀`
 };
@@ -226,7 +226,7 @@ function generateWaLink() {
     showToast("Link WA Berhasil Dibuat! 🔗");
 }
 
-// Fitur BARU: Memasukkan link WA ke dalam Template
+// Fitur Memasukkan link WA ke dalam Template
 function insertLinkToTemplate() {
     const generatedLink = document.getElementById('wa-result').value;
     let templateText = document.getElementById('result').value;
