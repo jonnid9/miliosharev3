@@ -37,7 +37,7 @@ body {
 
 .launcher-wrapper {
     background: var(--panel-bg);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(166px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
     border-radius: 16px;
@@ -47,47 +47,45 @@ body {
     overflow: hidden;
 }
 
+/* UPDATE BARU: Styling Header untuk Logo Besar & Efek Cahaya */
 .launcher-header {
     background: linear-gradient(90deg, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0) 100%);
     border-bottom: 1px solid var(--border-color);
     padding: 20px 30px;
+    display: flex;
+    align-items: center; /* Sejajar vertikal tengah */
+    justify-content: flex-start; /* Logo di kiri */
+    gap: 20px; /* Jarak antara logo dan teks */
+    position: relative; /* Wajib untuk efek cahaya */
+    overflow: hidden; /* Mencegah cahaya keluar batas */
 }
 
-/* KODE ANIMASI CAHAYA (SHINE EFFECT) */
-.shine-container {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    overflow: hidden; /* Mencegah cahaya keluar dari batas */
-}
-
-.shine-container::after {
+/* KODE EFEK CAHAYA (SHINE EFFECT) */
+.launcher-header::after {
     content: "";
     position: absolute;
     top: 0;
-    left: -150%;
+    left: -150%; /* Mulai jauh di kiri */
     width: 50%;
     height: 100%;
     background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-25deg);
-    animation: shine 5s infinite; /* Berulang setiap 5 detik */
-    z-index: 10;
-    pointer-events: none; /* Biar tetap bisa di-klik */
+    transform: skewX(-25deg); /* Sedikit miring biar dinamis */
+    animation: shine 5s infinite; /* Mengulang setiap 5 detik */
+    z-index: 10; /* Di atas logo dan teks */
+    pointer-events: none; /* Cahaya tidak menghalangi interaksi */
 }
 
 @keyframes shine {
     0% { left: -100%; }
-    15% { left: 200%; } /* Cahaya lewat dengan cepat di 15% pertama (0.75 detik) */
-    100% { left: 200%; } /* Diam menunggu sampai genap 5 detik */
+    20% { left: 200%; } /* Gerakan lewat cepat dalam 1 detik (20% dari 5 detik) */
+    100% { left: 200%; } /* Diam menunggu sisa waktunya */
 }
 
+/* UPDATE: Ukuran Logo yang Jauh Lebih Besar & Proposional */
 .app-logo {
-    height: 50px;
-    width: auto;
-    object-fit: contain;
+    height: 60px; /* Ukuran yang besar agar sejajar dengan dua baris teks */
+    width: auto; /* Lebar menyesuaikan agar tidak gepeng */
+    object-fit: contain; /* Memastikan gambar tidak terpotong */
 }
 
 .title-block {
@@ -166,6 +164,7 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 10px var(--gold-glow);
 }
 
+/* FIX: Styling khusus untuk dropdown options agar teks terbaca jelas */
 select option {
     background-color: #0f1115;
     color: #F8FAFC;
