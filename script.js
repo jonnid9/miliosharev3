@@ -119,7 +119,6 @@ const packageData = {
     "ext_ultimate": { type: "extension", title: "GOOGLE FLOW ULTRA VIP ULTIMATE", name: "FLOW ULTRA VIP ULTIMATE (EXTENSION)", serverInfo: "Server 1–7", serverCount: "7" }
 };
 
-// Fungsi Format Tanggal ke Bahasa Indonesia
 function getFormattedDate(dateString) {
     if (!dateString) return "[TANGGAL_AKTIF]";
     const d = new Date(dateString);
@@ -131,7 +130,6 @@ function toggleFields() {
     const val = document.getElementById('paket').value;
     const data = packageData[val];
     
-    // Tampilkan/Sembunyikan Field berdasarkan tipe paket
     if (data.type === 'private') {
         document.getElementById('private-fields').classList.remove('hidden');
         document.getElementById('extension-fields').classList.add('hidden');
@@ -146,7 +144,6 @@ function toggleFields() {
         document.getElementById('extension-fields').classList.remove('hidden');
     }
 
-    // UPDATE BARU: Otomatis mengisi Pesan WA sesuai paket yang dipilih
     document.getElementById('wa-pesan').value = `Om Milio Gaskan, Saya Mau Lanjut Langganan Paket ${data.title} Om...`;
 }
 
@@ -198,7 +195,6 @@ function generateTemplate() {
     document.getElementById('result').value = result;
 }
 
-// Fitur Copy Universal
 function copyToClipboard(elementId) {
     const el = document.getElementById(elementId);
     if(el.value.trim() === "") return;
@@ -208,7 +204,6 @@ function copyToClipboard(elementId) {
     showToast("Disalin ke Clipboard! ✅");
 }
 
-// Generate Link WA
 function generateWaLink() {
     let code = document.getElementById('wa-code').value;
     let phone = document.getElementById('wa-phone').value.trim();
@@ -219,18 +214,15 @@ function generateWaLink() {
         return;
     }
 
-    // Hapus angka 0 di depan jika ada
     if(phone.startsWith('0')) {
         phone = phone.substring(1);
     }
     
-    // Encode teks agar aman masuk URL
     let url = `https://wa.me/${code}${phone}?text=${encodeURIComponent(text)}`;
     document.getElementById('wa-result').value = url;
     showToast("Link WA Berhasil Dibuat! 🔗");
 }
 
-// Fitur Memasukkan link WA ke dalam Template
 function insertLinkToTemplate() {
     const generatedLink = document.getElementById('wa-result').value;
     let templateText = document.getElementById('result').value;
@@ -244,11 +236,9 @@ function insertLinkToTemplate() {
         return;
     }
 
-    // Regex untuk mendeteksi link wa.link atau wa.me yang lama di dalam template
     const waLinkRegex = /https:\/\/(wa\.link\/\w+|wa\.me\/\S+)/g;
     
     if (waLinkRegex.test(templateText)) {
-        // Mengganti link lama dengan link yang baru digenerate
         templateText = templateText.replace(waLinkRegex, generatedLink);
         document.getElementById('result').value = templateText;
         showToast("Link WA berhasil disematkan ke template! ✅");
@@ -264,11 +254,9 @@ function showToast(msg) {
     setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
 }
 
-// Inisialisasi awal saat web dibuka
 window.onload = function() {
     toggleFields();
     
-    // Set Default Tanggal Hari Ini
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
