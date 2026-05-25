@@ -47,44 +47,69 @@ body {
     overflow: hidden;
 }
 
-/* UPDATE BARU: Styling Header untuk Menyejajarkan Logo & Teks */
 .launcher-header {
     background: linear-gradient(90deg, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0) 100%);
     border-bottom: 1px solid var(--border-color);
     padding: 20px 30px;
-    /* Flexbox Row Configuration */
-    display: flex;
-    flex-direction: row; /* Susun kiri-ke-kanan */
-    align-items: center; /* Aligntment vertikal tengah sempurna */
-    justify-content: flex-start; /* Semua elemen rapat kiri */
-    gap: 20px; /* Jarak antara logo dan teks */
 }
 
-/* UPDATE: Styling Ukuran Logo agar Sejajar & Proposional */
+/* FIX UTAMA: Pembungkus logo dan teks dibikin flex agar sejajar kiri-kanan */
+.header-content {
+    display: flex;
+    flex-direction: row; /* Wajib baris (horizontal) */
+    align-items: center; /* Sejajar secara vertikal di tengah */
+    gap: 15px; /* Jarak antara logo dan teks */
+    position: relative; /* Buat batas efek cahaya */
+    width: fit-content;
+}
+
+/* EFEK CAHAYA (SHINE EFFECT) */
+.header-content::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: shine 5s infinite;
+    z-index: 10;
+    pointer-events: none;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+/* FIX UTAMA: Ukuran logo diperbesar proporsional */
 .app-logo {
-    height: 45px; /* Tinggi logo dibuat sejajar dengan dua baris teks */
-    width: auto; /* Lebar menyesuaikan agar tidak gepeng */
-    object-fit: contain; /* Memastikan gambar tidak terpotong */
+    height: 60px; /* Ukuran besar biar sejajar mantap dengan teks */
+    width: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .title-block {
     display: flex;
     flex-direction: column;
-    margin-top: 0; /* Hapus margin atas yang mungkin membuat teks turun */
+    justify-content: center;
 }
 
 .logo-text {
-    font-size: 24px;
+    font-size: 26px; /* Disesuaikan sedikit biar gagah */
     font-weight: 800;
     color: var(--gold);
     letter-spacing: 2px;
+    line-height: 1.2;
 }
 
 .subtitle {
     font-size: 12px;
     color: var(--text-muted);
     letter-spacing: 1px;
-    margin-top: 2px;
 }
 
 .launcher-body {
