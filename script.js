@@ -114,9 +114,9 @@ const packageData = {
     "kling_ultimate": { type: "private", title: "KLING MOTION CONTROL ULTIMATE / ALL IN", name: "KLING MOTION CONTROL ULTIMATE / ALL IN", body: "⚙️ SISTEM PAKET HARIAN\n💳 Total Harian Mendapat 20x Generate\n✅ 5x Generate V3.0 Standar\n✅ 5x Generate V3.0 Pro\n✅ 5x Generate V2.6 Standar\n✅ 5x Generate V2.6 Pro\n🎁 Bonus Harian Kredit 400\n━━━━━━━━━━━━━━━\n🎁 BONUS AKTIF\n✅ Suno 10x Sehari\n✅ Seedream Image Unlimited\n✅ GPT Image Unlimited\n📌 FITUR PREMIUM\n✅ Generate Kling MC\n✅ Generate Veo 3.1\n✅ Generate Super Grok\n✅ Generate Happy Horse\n✅ Generate Seedance\n━━━━━━━━━━━━━━━\n📌 RULES PEMAKAIAN\n• Dilarang mengganti password/email\n• Jangan login berlebihan di banyak device\n• Dilarang share akun ke publik\n• Gunakan dengan normal & wajar\n• Garansi berlaku selama masa aktif apabila bukan karena human error user" },
     "gpt": { type: "private", title: "CHAT GPT PLUS PRIVATE", name: "CHAT GPT PLUS PRIVATE", noLink: true, body: "📌 FITUR AKTIF\n✅ GPT-4o Active\n✅ GPT Image Generation\n✅ Upload File & Document\n✅ Faster Premium Response\n✅ Advanced AI Features\n✅ Create Custom GPT\n━━━━━━━━━━━━━━━\n📌 RULES PEMAKAIAN\n• Dilarang mengganti email/password\n• Jangan login berlebihan di banyak device\n• Dilarang share akun ke publik\n• Gunakan dengan normal & wajar\n• Garansi berlaku selama masa aktif apabila bukan karena human error user" },
     "capcut": { type: "private", title: "CAPCUT PRO PRIVATE", name: "CAPCUT PRO PRIVATE", noLink: true, body: "📌 FITUR AKTIF\n✅ Semua Fitur Pro Active\n✅ Export Tanpa Watermark\n✅ Premium Effect & Template\n✅ Premium Font & Asset\n✅ HD / 4K Export\n✅ AI Editing Premium\n━━━━━━━━━━━━━━━\n📌 RULES PEMAKAIAN\n• Dilarang mengganti email/password\n• Jangan login berlebihan di banyak device\n• Dilarang share akun ke publik\n• Gunakan dengan normal & wajar\n• Garansi berlaku selama masa aktif apabila bukan karena human error user" },
-    "ext_basic": { type: "extension", title: "GOOGLE FLOW ULTRA VIP BASIC (EXTENSION)", name: "FLOW ULTRA VIP BASIC (EXTENSION)", serverInfo: "Server 1–3", serverCount: "3" },
-    "ext_pro": { type: "extension", title: "GOOGLE FLOW ULTRA VIP PRO (EXTENSION)", name: "FLOW ULTRA VIP PRO (EXTENSION)", serverInfo: "Server 1–5", serverCount: "5" },
-    "ext_ultimate": { type: "extension", title: "GOOGLE FLOW ULTRA VIP ULTIMATE (EXTENSION)", name: "FLOW ULTRA VIP ULTIMATE (EXTENSION)", serverInfo: "Server 1–7", serverCount: "7" }
+    "ext_basic": { type: "extension", title: "GOOGLE FLOW ULTRA VIP BASIC", name: "FLOW ULTRA VIP BASIC (EXTENSION)", serverInfo: "Server 1–3", serverCount: "3" },
+    "ext_pro": { type: "extension", title: "GOOGLE FLOW ULTRA VIP PRO", name: "FLOW ULTRA VIP PRO (EXTENSION)", serverInfo: "Server 1–5", serverCount: "5" },
+    "ext_ultimate": { type: "extension", title: "GOOGLE FLOW ULTRA VIP ULTIMATE", name: "FLOW ULTRA VIP ULTIMATE (EXTENSION)", serverInfo: "Server 1–7", serverCount: "7" }
 };
 
 // Fungsi Format Tanggal ke Bahasa Indonesia
@@ -131,6 +131,7 @@ function toggleFields() {
     const val = document.getElementById('paket').value;
     const data = packageData[val];
     
+    // Tampilkan/Sembunyikan Field berdasarkan tipe paket
     if (data.type === 'private') {
         document.getElementById('private-fields').classList.remove('hidden');
         document.getElementById('extension-fields').classList.add('hidden');
@@ -144,6 +145,9 @@ function toggleFields() {
         document.getElementById('private-fields').classList.add('hidden');
         document.getElementById('extension-fields').classList.remove('hidden');
     }
+
+    // UPDATE BARU: Otomatis mengisi Pesan WA sesuai paket yang dipilih
+    document.getElementById('wa-pesan').value = `Om Milio Gaskan, Saya Mau Lanjut Langganan Paket ${data.title} Om...`;
 }
 
 function generateTemplate() {
