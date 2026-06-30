@@ -27,6 +27,12 @@ module.exports = async (req, res) => {
             if (!payload || !payload.key || !payload.title || !payload.name) {
                 return res.status(400).json({ error: 'Data paket tidak lengkap.' });
             }
+            if (!['private', 'sharing'].includes(payload.category)) {
+                return res.status(400).json({ error: 'Kategori paket tidak valid.' });
+            }
+            if (!['email_password', 'kode_akses'].includes(payload.cred_type)) {
+                return res.status(400).json({ error: 'Tipe kredensial tidak valid.' });
+            }
             const { error } = await supabaseAdmin
                 .from('paket_templates')
                 .upsert(payload, { onConflict: 'key' });

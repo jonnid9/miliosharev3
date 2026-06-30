@@ -1,5 +1,5 @@
 // =====================================================
-// MILIOLAB.AI — MILIO SHARE V4 (Supabase-driven)
+// MILIOLAB.AI — MILIO SHARE V5 (Supabase-driven, dynamic links & cred type)
 // =====================================================
 
 const SUPABASE_URL = "https://qxkrnkwapddyczbktfzk.supabase.co";
@@ -8,108 +8,6 @@ const SUPABASE_ANON_KEY = "sb_publishable_hptilHcj8-JKBxa_5rX2Jw_6EQPboT8";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let packageData = {}; // keyed by paket key, populated from Supabase
-
-const templates = {
-    private: `🎉 PENYERAHAN AKUN {PAKET} 🎉
-Terima kasih sudah order di MILIOLAB.AI 💎
-Berikut detail akun kamu:
-━━━━━━━━━━━━━━━
-🔐 DETAIL AKUN
-📧 Email :
-{EMAIL}
-🔑 Password :
-{PASSWORD}{LINK_AKSES_SECTION}
-📦 Paket :
-{PAKET_NAME}
-📅 Tanggal Aktif :
-{TANGGAL}
-🛡 Masa Aktif :
-30 Hari
-━━━━━━━━━━━━━━━
-{BODY}
-━━━━━━━━━━━━━━━
-🛠 SUPPORT & GARANSI
-✅ Full Service
-✅ Full Garansi
-✅ Support Fast Respon
-✅ Dibantu sampai bisa login
-📲 OM MILIO
-CHAT ADMIN DISINI:
-https://wa.link/d3t9ge
-━━━━━━━━━━━━━━━
-💎 MILIOLAB.AI
-Artificial Intelligence for Real Business Growth 🚀`,
-
-    extension: `🔥 PENYERAHAN AKUN {PAKET} 🔥
-Terima kasih sudah order di MILIOLAB.AI 💎
-━━━━━━━━━━━━━━━━━━━━━━
-⚠️ INFO PENTING
-Ini adalah PAKET SHARING (AKUN BERBAGI), bukan akun private.
-✔ Masih bisa UNLIMITED generate (VEO 3.1 – lower priority)
-✔ Disarankan:
-• Maksimal 2 output per generate
-• Jika gagal → gunakan 1 output saja
-━━━━━━━━━━━━━━━━━━━━━━
-🧠 JIKA GAGAL GENERATE, CEK INI:
-• Pastikan foto & prompt sudah sesuai
-• Coba pindah server ({SERVER_INFO})
-• Gunakan internet stabil
-• Close browser lalu login ulang
-• Hindari spam generate berlebihan
-━━━━━━━━━━━━━━━━━━━━━━
-📱 BATAS DEVICE (WAJIB DIPATUHI)
-• Maksimal 2 perangkat aktif
-• Wajib logout perangkat lama sebelum login baru
-❗ Karena ini paket sharing, pelanggaran device berisiko banned sistem tanpa garansi
-━━━━━━━━━━━━━━━━━━━━━━
-📦 DETAIL AKUN & AKSES
-🔗 Link Extension UNTUK PENGGUNA LAPTOP/PC/IOS ORION BROWSER (Sekali Klik Langsung Ter-Download):
-{LINK_EXT}
-
-🔗 Link APK ANDROID UNTUK PENGGUNA ANDROID (Sekali Klik Langsung Ter-Download, cari filenya dan instal):
-{LINK_APK}
-
-🔗 Link KIWI BROWSER (Alternatif untuk Device Android):
-{LINK_KIWI}
-
-🎟 Kode Akses:
-{KODE_AKSES}
-
-📦 Paket:
-{PAKET_NAME}
-📅 Tanggal Aktif:
-{TANGGAL}
-🛡 Masa Aktif:
-30 Hari
-━━━━━━━━━━━━━━━
-⚙️ FITUR UTAMA
-✅ {SERVER_COUNT} Server Google Flow
-✅ Bonus Server Super Grok
-✅ Bonus Chat GPT PLUS 1 Bulan
-✅ Bebas pindah server sesuai kondisi
-✅ Multi Jalur Generate
-━━━━━━━━━━━━━━━
-⚠️ KEBIJAKAN PEMBELIAN
-• Tidak dapat refund setelah pembelian
-• Paket sharing performa bisa fluktuatif
-• Jika ada kendala mohon bersabar
-• Tim akan berusaha maksimal memperbaiki secepat mungkin
-━━━━━━━━━━━━━━━
-🎥 PENTING
-Pastikan menonton tutorial sampai selesai agar tidak terjadi kesalahan penggunaan.
-━━━━━━━━━━━━━━━
-🛠 SUPPORT & GARANSI
-✅ Full Service
-✅ Full Garansi
-✅ Support Fast Respon
-✅ Dibantu sampai berhasil install
-📲 OM MILIO
-CHAT ADMIN DISINI:
-https://wa.link/d3t9ge
-━━━━━━━━━━━━━━━
-💎 MILIOLAB.AI
-Artificial Intelligence for Real Business Growth 🚀`
-};
 
 function getFormattedDate(dateString) {
     if (!dateString) return "[TANGGAL_AKTIF]";
@@ -138,17 +36,14 @@ async function loadPackages() {
     select.innerHTML = '';
     data.forEach(row => {
         packageData[row.key] = {
-            type: row.type,
+            category: row.category,       // 'private' | 'sharing'
+            credType: row.cred_type,      // 'email_password' | 'kode_akses'
             title: row.title,
             name: row.name,
             body: row.body,
-            noLink: row.no_link,
-            linkAkses: row.link_akses,
+            links: row.links || [],       // [{name, url}]
             serverInfo: row.server_info,
-            serverCount: row.server_count,
-            linkExt: row.link_ext,
-            linkApk: row.link_apk,
-            linkKiwi: row.link_kiwi
+            serverCount: row.server_count
         };
         const opt = document.createElement('option');
         opt.value = row.key;
@@ -161,31 +56,77 @@ async function loadPackages() {
     }
 }
 
+// Render field kredensial (Email+Password ATAU Kode Akses) sesuai cred_type
+function renderCredentialFields(data) {
+    const container = document.getElementById('credential-fields');
+    if (data.credType === 'email_password') {
+        container.innerHTML = `
+            <div class="form-group">
+                <label for="cred-email">Email:</label>
+                <input type="email" id="cred-email" placeholder="email@gmail.com">
+            </div>
+            <div class="form-group">
+                <label for="cred-password">Password:</label>
+                <input type="text" id="cred-password" placeholder="password123">
+            </div>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="form-group">
+                <label for="cred-kodeakses">Kode Akses:</label>
+                <input type="text" id="cred-kodeakses" placeholder="MILIO-XXXX-XXXX">
+            </div>
+        `;
+    }
+}
+
+// Render field link dinamis (bisa 0, 1, atau berapa pun) sesuai data paket
+function renderLinkFields(data) {
+    const container = document.getElementById('links-fields');
+    if (!data.links || data.links.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+    container.innerHTML = data.links.map((link, i) => `
+        <div class="form-group">
+            <label>${link.name}:</label>
+            <input type="text" class="dyn-link-input" data-link-name="${link.name.replace(/"/g, '&quot;')}" value="${(link.url || '').replace(/"/g, '&quot;')}">
+        </div>
+    `).join('');
+}
+
 function toggleFields() {
     const val = document.getElementById('paket').value;
     const data = packageData[val];
     if (!data) return;
 
-    if (data.type === 'private') {
-        document.getElementById('private-fields').classList.remove('hidden');
-        document.getElementById('extension-fields').classList.add('hidden');
-
-        if (data.noLink) {
-            document.getElementById('field-link-akses').classList.add('hidden');
-        } else {
-            document.getElementById('field-link-akses').classList.remove('hidden');
-            document.getElementById('link-akses').value = data.linkAkses || '';
-        }
-    } else {
-        document.getElementById('private-fields').classList.add('hidden');
-        document.getElementById('extension-fields').classList.remove('hidden');
-
-        document.getElementById('link-ext').value = data.linkExt || '';
-        document.getElementById('link-apk').value = data.linkApk || '';
-        document.getElementById('link-kiwi').value = data.linkKiwi || '';
-    }
+    renderCredentialFields(data);
+    renderLinkFields(data);
 
     document.getElementById('wa-pesan').value = `Om Milio Gaskan, Saya Mau Lanjut Langganan Paket ${data.title} Om...`;
+}
+
+function buildCredentialBlock(data) {
+    if (data.credType === 'email_password') {
+        const email = (document.getElementById('cred-email') || {}).value || "[EMAIL]";
+        const password = (document.getElementById('cred-password') || {}).value || "[PASSWORD]";
+        return `📧 Email :\n${email}\n🔑 Password :\n${password}\n`;
+    } else {
+        const kodeAkses = (document.getElementById('cred-kodeakses') || {}).value || "[KODE_AKSES]";
+        return `🎟 Kode Akses :\n${kodeAkses}\n`;
+    }
+}
+
+function buildLinksBlock() {
+    const inputs = document.querySelectorAll('.dyn-link-input');
+    if (inputs.length === 0) return '';
+    let block = '';
+    inputs.forEach(input => {
+        const name = input.dataset.linkName;
+        const url = input.value || '[LINK]';
+        block += `🔗 ${name} :\n${url}\n\n`;
+    });
+    return block;
 }
 
 function generateTemplate() {
@@ -198,43 +139,97 @@ function generateTemplate() {
     const rawTanggal = document.getElementById('tanggal').value;
     const tanggal = getFormattedDate(rawTanggal);
 
+    const credentialBlock = buildCredentialBlock(data);
+    const linksBlock = buildLinksBlock();
+
     let result = "";
 
-    if (data.type === 'private') {
-        const email = document.getElementById('email').value || "[EMAIL]";
-        const password = document.getElementById('password').value || "[PASSWORD]";
-
-        let linkAksesStr = "";
-        if (!data.noLink) {
-            const linkAkses = document.getElementById('link-akses').value;
-            linkAksesStr = `\n🔗 Link Akses :\n${linkAkses}`;
-        }
-
-        result = templates.private
-            .replace("{PAKET}", data.title)
-            .replace("{EMAIL}", email)
-            .replace("{PASSWORD}", password)
-            .replace("{LINK_AKSES_SECTION}", linkAksesStr)
-            .replace("{PAKET_NAME}", data.name)
-            .replace("{TANGGAL}", tanggal)
-            .replace("{BODY}", data.body || "");
+    if (data.category === 'private') {
+        result = `🎉 PENYERAHAN AKUN ${data.title} 🎉
+Terima kasih sudah order di MILIOLAB.AI 💎
+Berikut detail akun kamu:
+━━━━━━━━━━━━━━━
+🔐 DETAIL AKUN
+${credentialBlock}${linksBlock}📦 Paket :
+${data.name}
+📅 Tanggal Aktif :
+${tanggal}
+🛡 Masa Aktif :
+30 Hari
+━━━━━━━━━━━━━━━
+${data.body || ""}
+━━━━━━━━━━━━━━━
+🛠 SUPPORT & GARANSI
+✅ Full Service
+✅ Full Garansi
+✅ Support Fast Respon
+✅ Dibantu sampai bisa login
+📲 OM MILIO
+CHAT ADMIN DISINI:
+https://wa.link/d3t9ge
+━━━━━━━━━━━━━━━
+💎 MILIOLAB.AI
+Artificial Intelligence for Real Business Growth 🚀`;
 
     } else {
-        const linkExt = document.getElementById('link-ext').value;
-        const linkApk = document.getElementById('link-apk').value;
-        const linkKiwi = document.getElementById('link-kiwi').value;
-        const kodeAkses = document.getElementById('kode-akses').value || "[KODE_AKSES]";
-
-        result = templates.extension
-            .replace("{PAKET}", data.title)
-            .replace("{SERVER_INFO}", data.serverInfo || "")
-            .replace("{LINK_EXT}", linkExt)
-            .replace("{LINK_APK}", linkApk)
-            .replace("{LINK_KIWI}", linkKiwi)
-            .replace("{KODE_AKSES}", kodeAkses)
-            .replace("{PAKET_NAME}", data.name)
-            .replace("{TANGGAL}", tanggal)
-            .replace("{SERVER_COUNT}", data.serverCount || "");
+        result = `🔥 PENYERAHAN AKUN ${data.title} 🔥
+Terima kasih sudah order di MILIOLAB.AI 💎
+━━━━━━━━━━━━━━━━━━━━━━
+⚠️ INFO PENTING
+Ini adalah PAKET SHARING (AKUN BERBAGI), bukan akun private.
+✔ Masih bisa UNLIMITED generate (VEO 3.1 – lower priority)
+✔ Disarankan:
+• Maksimal 2 output per generate
+• Jika gagal → gunakan 1 output saja
+━━━━━━━━━━━━━━━━━━━━━━
+🧠 JIKA GAGAL GENERATE, CEK INI:
+• Pastikan foto & prompt sudah sesuai
+• Coba pindah server (${data.serverInfo || '-'})
+• Gunakan internet stabil
+• Close browser lalu login ulang
+• Hindari spam generate berlebihan
+━━━━━━━━━━━━━━━━━━━━━━
+📱 BATAS DEVICE (WAJIB DIPATUHI)
+• Maksimal 2 perangkat aktif
+• Wajib logout perangkat lama sebelum login baru
+❗ Karena ini paket sharing, pelanggaran device berisiko banned sistem tanpa garansi
+━━━━━━━━━━━━━━━━━━━━━━
+📦 DETAIL AKUN & AKSES
+${linksBlock}${credentialBlock}
+📦 Paket:
+${data.name}
+📅 Tanggal Aktif:
+${tanggal}
+🛡 Masa Aktif:
+30 Hari
+━━━━━━━━━━━━━━━
+⚙️ FITUR UTAMA
+✅ ${data.serverCount || '-'} Server Google Flow
+✅ Bonus Server Super Grok
+✅ Bonus Chat GPT PLUS 1 Bulan
+✅ Bebas pindah server sesuai kondisi
+✅ Multi Jalur Generate
+━━━━━━━━━━━━━━━
+⚠️ KEBIJAKAN PEMBELIAN
+• Tidak dapat refund setelah pembelian
+• Paket sharing performa bisa fluktuatif
+• Jika ada kendala mohon bersabar
+• Tim akan berusaha maksimal memperbaiki secepat mungkin
+━━━━━━━━━━━━━━━
+🎥 PENTING
+Pastikan menonton tutorial sampai selesai agar tidak terjadi kesalahan penggunaan.
+━━━━━━━━━━━━━━━
+🛠 SUPPORT & GARANSI
+✅ Full Service
+✅ Full Garansi
+✅ Support Fast Respon
+✅ Dibantu sampai berhasil install
+📲 OM MILIO
+CHAT ADMIN DISINI:
+https://wa.link/d3t9ge
+━━━━━━━━━━━━━━━
+💎 MILIOLAB.AI
+Artificial Intelligence for Real Business Growth 🚀`;
     }
 
     document.getElementById('result').value = result;
@@ -304,7 +299,7 @@ function insertLinkToTemplate() {
 }
 
 // ===== Riwayat Generate (localStorage, max 20 entri) =====
-const HISTORY_KEY = "milioshare_history_v4";
+const HISTORY_KEY = "milioshare_history_v5";
 
 function saveToHistory(paketTitle, text) {
     let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
