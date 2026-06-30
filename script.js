@@ -324,6 +324,40 @@ function showToast(msg) {
     setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 3000);
 }
 
+// ===== PWA: register service worker + install prompt =====
+let deferredInstallPrompt = null;
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(err => console.error('SW register gagal:', err));
+    });
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    const btn = document.getElementById('install-btn');
+    if (btn) btn.classList.remove('hidden');
+});
+
+function installApp() {
+    if (!deferredInstallPrompt) {
+        showToast("App sudah ter-install atau browser tidak mendukung install otomatis.");
+        return;
+    }
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(() => {
+        deferredInstallPrompt = null;
+        document.getElementById('install-btn').classList.add('hidden');
+    });
+}
+
+window.addEventListener('appinstalled', () => {
+    const btn = document.getElementById('install-btn');
+    if (btn) btn.classList.add('hidden');
+    showToast("App berhasil di-install! 📲");
+});
+
 window.onload = function () {
     const today = new Date();
     const yyyy = today.getFullYear();

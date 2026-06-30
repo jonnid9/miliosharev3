@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MILIOLAB STUDIO LAUNCHER</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" href="icon-192.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,7 +21,10 @@
                     <div class="subtitle">TEMPLATE SHARE & WA GENERATOR • V4</div>
                 </div>
             </div>
-            <a href="adm.html" class="admin-link" title="Kelola Paket">⚙️ Admin Paket</a>
+            <div class="header-actions">
+                <a href="adm.html" class="admin-link" title="Kelola Paket">⚙️ Admin Paket</a>
+                <button id="install-btn" class="admin-link hidden" onclick="installApp()" title="Install ke Homescreen">📲 Install App</button>
+            </div>
         </div>
 
         <div class="launcher-body">
