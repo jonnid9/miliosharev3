@@ -9,14 +9,15 @@
 <body>
 
     <div class="launcher-wrapper">
-        <div class="launcher-header">
+        <div class="launcher-header header-flex">
             <div class="header-content">
                 <img src="https://i.8upload.com/image/c8e20307e036c80a/chatgpt-image-may-25-2026-04-13-34-pm.png" alt="MILIOLAB Logo" class="app-logo">
                 <div class="title-block">
                     <div class="logo-text">MILIOLAB.AI</div>
-                    <div class="subtitle">TEMPLATE SHARE & WA GENERATOR • UPDATED</div>
+                    <div class="subtitle">TEMPLATE SHARE & WA GENERATOR • V4</div>
                 </div>
             </div>
+            <a href="admin.html" class="admin-link" title="Kelola Paket">⚙️ Admin Paket</a>
         </div>
 
         <div class="launcher-body">
@@ -26,22 +27,7 @@
                 <div class="form-group">
                     <label for="paket">Pilih Paket:</label>
                     <select id="paket" onchange="toggleFields()">
-                        <option value="seedance">SEEDANCE PRIVATE</option>
-                        <option value="veo_basic">FLOW VEO 3.1 BASIC LITE</option>
-                        <option value="veo_pro">FLOW VEO 3.1 PRO FAST</option>
-                        <option value="veo_ultimate">FLOW VEO 3.1 ULTIMATE FAST</option>
-                        <option value="grok_basic">SUPER GROK BASIC</option>
-                        <option value="grok_ultimate">SUPER GROK ULTIMATE</option>
-                        <option value="happy_horse">HAPPY HORSE ULTIMATE</option>
-                        <option value="suno">SUNO ULTIMATE UNLIMITED</option>
-                        <option value="kling_basic">KLING MOTION CONTROL BASIC / ALL IN</option>
-                        <option value="kling_pro">KLING MOTION CONTROL PRO / ALL IN</option>
-                        <option value="kling_ultimate">KLING MOTION CONTROL ULTIMATE / ALL IN</option>
-                        <option value="gpt">CHAT GPT PLUS PRIVATE</option>
-                        <option value="capcut">CAPCUT PRO PRIVATE</option>
-                        <option value="ext_basic">FLOW ULTRA VIP BASIC (EXTENSION)</option>
-                        <option value="ext_pro">FLOW ULTRA VIP PRO (EXTENSION)</option>
-                        <option value="ext_ultimate">FLOW ULTRA VIP ULTIMATE (EXTENSION)</option>
+                        <option>⏳ Memuat paket...</option>
                     </select>
                 </div>
 
@@ -68,11 +54,11 @@
                 <div id="extension-fields" class="field-group hidden">
                     <div class="form-group">
                         <label for="link-ext">Link Extension (PC/Laptop/Orion):</label>
-                        <input type="text" id="link-ext" value="https://tekno-apps.texaproject.com/downloads/">
+                        <input type="text" id="link-ext" value="https://apps.texaproject.com/ext/TEKNO_APPS_v5.2.0_PROD.zip">
                     </div>
                     <div class="form-group">
                         <label for="link-apk">Link APK (Android):</label>
-                        <input type="text" id="link-apk" value="https://www.dropbox.com/scl/fi/jyn8dczv934z4o495wxm9/Tekno_Apps_v6.0.0_release.apk?rlkey=lqttssgsllw87g364fi3ucrcc&st=vsve7ale&dl=1">
+                        <input type="text" id="link-apk" value="https://dl.dropboxusercontent.com/scl/fi/klbw8aorlb4bwx14apim7/Tekno_Apps_5.2.0_release.apk?rlkey=goj9z7l24z932u6v6avw2c2ul&st=qzk0jj4w">
                     </div>
                     <div class="form-group">
                         <label for="link-kiwi">Link Kiwi Browser:</label>
@@ -135,6 +121,7 @@
 
     <div id="toast">✅ Aksi Berhasil!</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 </html>
