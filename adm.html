@@ -203,21 +203,14 @@
                 <input type="text" id="f-key" placeholder="contoh: kling_basic">
             </div>
 
-            <div class="row-2">
-                <div class="form-group">
-                    <label>Kategori Paket:</label>
-                    <select id="f-category">
-                        <option value="private">Private</option>
-                        <option value="sharing">Sharing</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Tipe Kredensial:</label>
-                    <select id="f-credtype">
-                        <option value="email_password">Email & Password</option>
-                        <option value="kode_akses">Kode Akses</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label>Tipe Paket:</label>
+                <select id="f-combo" onchange="toggleSharingFields()">
+                    <option value="private|kode_akses">Private (Kode Akses)</option>
+                    <option value="private|email_password">Private (Email & Password)</option>
+                    <option value="sharing|kode_akses">Sharing (Kode Akses)</option>
+                    <option value="sharing|email_password">Sharing (Email & Password)</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -361,8 +354,7 @@
                 titleEl.textContent = `Edit Paket: ${p.title}`;
                 document.getElementById('f-key').value = p.key;
                 document.getElementById('f-key').disabled = true;
-                document.getElementById('f-category').value = p.category;
-                document.getElementById('f-credtype').value = p.cred_type;
+                document.getElementById('f-combo').value = `${p.category}|${p.cred_type}`;
                 document.getElementById('f-title').value = p.title;
                 document.getElementById('f-name').value = p.name;
                 document.getElementById('f-body').value = p.body || '';
@@ -375,16 +367,14 @@
                 titleEl.textContent = 'Tambah Paket Baru';
                 document.getElementById('f-key').value = '';
                 document.getElementById('f-key').disabled = false;
-                document.getElementById('f-category').value = 'private';
-                document.getElementById('f-credtype').value = 'email_password';
+                document.getElementById('f-combo').value = 'private|email_password';
                 document.getElementById('f-title').value = '';
                 document.getElementById('f-name').value = '';
                 document.getElementById('f-body').value = '';
                 document.getElementById('f-serverinfo').value = '';
                 document.getElementById('f-servercount').value = '';
                 document.getElementById('f-sort').value = (packages.length + 1) * 10;
-
-                addLinkRow('Link Akses', 'https://dms-teknologi.com/');
+                // Sengaja dikosongin — link ditambah manual lewat tombol "+ Tambah Link"
             }
 
             toggleSharingFields();
@@ -396,10 +386,9 @@
         }
 
         function toggleSharingFields() {
-            const category = document.getElementById('f-category').value;
+            const [category] = document.getElementById('f-combo').value.split('|');
             document.getElementById('f-sharing-fields').classList.toggle('hidden', category !== 'sharing');
         }
-        document.getElementById('f-category').addEventListener('change', toggleSharingFields);
 
         function collectLinks() {
             const rows = document.querySelectorAll('#links-container .link-row');
@@ -414,8 +403,7 @@
 
         async function savePackage() {
             const key = document.getElementById('f-key').value.trim().toLowerCase().replace(/\s+/g, '_');
-            const category = document.getElementById('f-category').value;
-            const credType = document.getElementById('f-credtype').value;
+            const [category, credType] = document.getElementById('f-combo').value.split('|');
             const title = document.getElementById('f-title').value.trim();
             const name = document.getElementById('f-name').value.trim();
 
