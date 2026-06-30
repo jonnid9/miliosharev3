@@ -22,26 +22,11 @@
         <div class="launcher-body">
             <div class="panel">
                 <div class="section-title">⚙️ Konfigurasi Akun</div>
-                
+
                 <div class="form-group">
                     <label for="paket">Pilih Paket:</label>
                     <select id="paket" onchange="toggleFields()">
-                        <option value="seedance">SEEDANCE PRIVATE</option>
-                        <option value="veo_basic">FLOW VEO 3.1 BASIC LITE</option>
-                        <option value="veo_pro">FLOW VEO 3.1 PRO FAST</option>
-                        <option value="veo_ultimate">FLOW VEO 3.1 ULTIMATE FAST</option>
-                        <option value="grok_basic">SUPER GROK BASIC</option>
-                        <option value="grok_ultimate">SUPER GROK ULTIMATE</option>
-                        <option value="happy_horse">HAPPY HORSE ULTIMATE</option>
-                        <option value="suno">SUNO ULTIMATE UNLIMITED</option>
-                        <option value="kling_basic">KLING MOTION CONTROL BASIC / ALL IN</option>
-                        <option value="kling_pro">KLING MOTION CONTROL PRO / ALL IN</option>
-                        <option value="kling_ultimate">KLING MOTION CONTROL ULTIMATE / ALL IN</option>
-                        <option value="gpt">CHAT GPT PLUS PRIVATE</option>
-                        <option value="capcut">CAPCUT PRO PRIVATE</option>
-                        <option value="ext_basic">FLOW ULTRA VIP BASIC (EXTENSION)</option>
-                        <option value="ext_pro">FLOW ULTRA VIP PRO (EXTENSION)</option>
-                        <option value="ext_ultimate">FLOW ULTRA VIP ULTIMATE (EXTENSION)</option>
+                        <option>⏳ Memuat paket...</option>
                     </select>
                 </div>
 
@@ -50,39 +35,9 @@
                     <input type="date" id="tanggal">
                 </div>
 
-                <div id="private-fields" class="field-group">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" placeholder="email@gmail.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="text" id="password" placeholder="password123">
-                    </div>
-                    <div class="form-group" id="field-link-akses">
-                        <label for="link-akses">Link Akses:</label>
-                        <input type="text" id="link-akses" value="https://dms-teknologi.com/">
-                    </div>
-                </div>
+                <div id="credential-fields" class="field-group"></div>
 
-                <div id="extension-fields" class="field-group hidden">
-                    <div class="form-group">
-                        <label for="link-ext">Link Extension (PC/Laptop/Orion):</label>
-                        <input type="text" id="link-ext" value="https://apps.texaproject.com/ext/TEKNO_APPS_v5.2.0_PROD.zip">
-                    </div>
-                    <div class="form-group">
-                        <label for="link-apk">Link APK (Android):</label>
-                        <input type="text" id="link-apk" value="https://dl.dropboxusercontent.com/scl/fi/klbw8aorlb4bwx14apim7/Tekno_Apps_5.2.0_release.apk?rlkey=goj9z7l24z932u6v6avw2c2ul&st=qzk0jj4w">
-                    </div>
-                    <div class="form-group">
-                        <label for="link-kiwi">Link Kiwi Browser:</label>
-                        <input type="text" id="link-kiwi" value="https://github.com/kiwibrowser/src.next/releases/download/14310011181/com.kiwibrowser.browser-arm64-14310011181-github.apk">
-                    </div>
-                    <div class="form-group">
-                        <label for="kode-akses">Kode Akses:</label>
-                        <input type="text" id="kode-akses" placeholder="MILIO-XXXX-XXXX">
-                    </div>
-                </div>
+                <div id="links-fields" class="field-group"></div>
 
                 <div class="btn-group">
                     <button class="btn-primary" onclick="generateTemplate()">⚡ Generate Teks</button>
@@ -97,7 +52,7 @@
 
             <div class="panel">
                 <div class="section-title">📲 WA Link Generator</div>
-                
+
                 <div class="wa-row">
                     <div class="form-group">
                         <label>Kode:</label>
@@ -127,7 +82,7 @@
                 </div>
 
                 <button class="btn-secondary w-100" onclick="copyToClipboard('wa-result')">📋 Copy Link WA</button>
-                
+
                 <button class="btn-action w-100 mt-10" onclick="insertLinkToTemplate()">↖️ Masukkan Link ke Template</button>
             </div>
         </div>
@@ -135,6 +90,7 @@
 
     <div id="toast">✅ Aksi Berhasil!</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 </html>
